@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Theng Badz — Software Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #18181f;
+    --border: rgba(255,255,255,0.07);
+    --text: #e8e6f0;
+    --muted: #7a7890;
+    --accent-cs: #00d4ff;
+    --accent-dj: #44cf6c;
+    --accent-lv: #ff6b35;
+    --gold: #f5c842;
+    --white: #ffffff;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: 'Outfit', sans-serif; font-weight: 300; overflow-x: hidden; line-height: 1.6; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 999; opacity: 0.4; }
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.4rem 3rem; background: rgba(10,10,15,0.85); backdrop-filter: blur(18px); border-bottom: 1px solid var(--border); }
+  .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; color: var(--white); text-decoration: none; }
+  .nav-logo span { color: var(--gold); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { font-family: 'DM Mono', monospace; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--white); }
+  .nav-pill { font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.1em; color: var(--bg); background: var(--gold); padding: 0.45rem 1.1rem; border-radius: 100px; text-decoration: none; font-weight: 500; transition: opacity 0.2s; }
+  .nav-pill:hover { opacity: 0.8; }
+  .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 3rem 5rem; position: relative; overflow: hidden; }
+  .hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 60% 50% at 80% 40%, rgba(0,212,255,0.07) 0%, transparent 60%), radial-gradient(ellipse 50% 60% at 10% 80%, rgba(245,200,66,0.06) 0%, transparent 55%); }
+  .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px); background-size: 60px 60px; mask-image: linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%); }
+  .hero-label { font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 0.7s 0.2s forwards; }
+  .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(3.5rem, 9vw, 8rem); font-weight: 900; line-height: 0.95; letter-spacing: -0.02em; color: var(--white); max-width: 900px; opacity: 0; animation: fadeUp 0.8s 0.4s forwards; }
+  .hero-title em { font-style: italic; color: var(--gold); }
+  .hero-sub { font-size: 1.05rem; color: var(--muted); max-width: 480px; margin-top: 2rem; font-weight: 300; opacity: 0; animation: fadeUp 0.8s 0.6s forwards; }
+  .hero-bottom { display: flex; align-items: center; gap: 3rem; margin-top: 3.5rem; opacity: 0; animation: fadeUp 0.8s 0.8s forwards; }
+  .hero-cta { display: flex; align-items: center; gap: 0.8rem; font-family: 'DM Mono', monospace; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--white); text-decoration: none; border: 1px solid rgba(255,255,255,0.2); padding: 0.9rem 1.8rem; border-radius: 4px; transition: border-color 0.2s, background 0.2s; }
+  .hero-cta:hover { border-color: var(--gold); background: rgba(245,200,66,0.06); }
+  .hero-stats { display: flex; gap: 3rem; }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--white); line-height: 1; }
+  .stat-label { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-top: 0.3rem; }
+  .scroll-hint { position: absolute; bottom: 2.5rem; right: 3rem; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); opacity: 0; animation: fadeIn 1s 1.4s forwards; }
+  .scroll-line { width: 1px; height: 50px; background: linear-gradient(to bottom, var(--muted), transparent); animation: scrollAnim 2s ease-in-out infinite; }
+  section { padding: 7rem 3rem; }
+  .section-header { display: flex; align-items: baseline; gap: 1.5rem; margin-bottom: 4rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem; }
+  .section-num { font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.1em; color: var(--muted); }
+  .section-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; color: var(--white); flex: 1; }
+  .tech-divider { display: flex; align-items: center; gap: 1.5rem; margin: 5rem 0 3rem; }
+  .tech-divider-line { flex: 1; height: 1px; background: var(--border); }
+  .tech-divider-label { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-style: italic; color: var(--white); }
+  .tech-pill { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; padding: 0.35rem 0.9rem; border-radius: 100px; border: 1px solid; white-space: nowrap; }
+  .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 2px; }
+  .project-card { background: var(--surface); overflow: hidden; position: relative; cursor: pointer; transition: transform 0.4s cubic-bezier(0.16,1,0.3,1); }
+  .project-card:hover { transform: translateY(-6px); z-index: 2; }
+  /* SLIDESHOW */
+  .card-img { width: 100%; aspect-ratio: 16/10; overflow: hidden; position: relative; }
+  .card-img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; opacity: 0; transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16,1,0.3,1); transform: scale(1.05); }
+  .card-img img.active { opacity: 1; transform: scale(1); }
+  .project-card:hover .card-img img.active { transform: scale(1.03); }
+  .card-img-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,10,15,0.9) 0%, rgba(10,10,15,0.2) 60%, transparent 100%); z-index: 2; pointer-events: none; }
+  .card-tech-badge { position: absolute; top: 1rem; left: 1rem; font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; padding: 0.3rem 0.8rem; border-radius: 100px; border: 1px solid; backdrop-filter: blur(8px); background: rgba(10,10,15,0.6); z-index: 3; }
+  /* DOTS */
+  .slide-dots { position: absolute; bottom: 0.8rem; right: 1rem; display: flex; gap: 0.35rem; z-index: 3; opacity: 0; transition: opacity 0.3s ease; }
+  .project-card:hover .slide-dots { opacity: 1; }
+  .slide-dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,0.3); transition: background 0.3s, transform 0.3s; cursor: pointer; }
+  .slide-dot.active { background: var(--white); transform: scale(1.4); }
+  /* COUNTER */
+  .slide-counter { position: absolute; top: 1rem; right: 1rem; font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; color: rgba(255,255,255,0.6); background: rgba(10,10,15,0.65); backdrop-filter: blur(8px); padding: 0.25rem 0.65rem; border-radius: 100px; z-index: 3; opacity: 0; transition: opacity 0.3s ease; }
+  .project-card:hover .slide-counter { opacity: 1; }
+  .card-body { padding: 1.5rem 1.6rem 1.8rem; background: var(--surface2); }
+  .card-number { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 0.6rem; }
+  .card-title { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; color: var(--white); line-height: 1.2; margin-bottom: 0.6rem; }
+  .card-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; margin-bottom: 1.2rem; }
+  .card-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.4rem; }
+  .card-tag { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; color: var(--muted); background: rgba(255,255,255,0.04); border: 1px solid var(--border); padding: 0.25rem 0.6rem; border-radius: 3px; }
+  .card-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; border-top: 1px solid var(--border); }
+  .card-link { font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--white); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; transition: gap 0.2s; }
+  .card-link:hover { gap: 0.8rem; }
+  .card-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .skills-section { background: var(--surface); }
+  .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+  .skill-block { background: var(--surface2); padding: 2rem; position: relative; overflow: hidden; }
+  .skill-block::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; }
+  .skill-block.cs::before { background: var(--accent-cs); }
+  .skill-block.dj::before { background: var(--accent-dj); }
+  .skill-block.lv::before { background: var(--accent-lv); }
+  .skill-block-title { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.2rem; }
+  .skill-list { list-style: none; }
+  .skill-list li { font-size: 0.9rem; color: var(--text); padding: 0.5rem 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 0.7rem; }
+  .skill-list li:last-child { border-bottom: none; }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+  .about-img-wrap { position: relative; }
+  .about-img-frame { width: 100%; aspect-ratio: 3/4; background: var(--surface2); overflow: hidden; position: relative; }
+  .about-img-frame img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(30%); }
+  .about-img-deco { position: absolute; bottom: -1.5rem; right: -1.5rem; width: 60%; aspect-ratio: 1; border: 1px solid var(--gold); z-index: -1; }
+  .about-exp-badge { position: absolute; bottom: 2rem; left: -2rem; background: var(--gold); color: var(--bg); padding: 1rem 1.5rem; font-family: 'Playfair Display', serif; }
+  .about-exp-badge .num { font-size: 2.2rem; font-weight: 900; line-height: 1; display: block; }
+  .about-exp-badge .label { font-size: 0.7rem; font-family: 'DM Mono', monospace; letter-spacing: 0.1em; text-transform: uppercase; }
+  .about-text h2 { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; color: var(--white); line-height: 1.2; margin-bottom: 1.5rem; }
+  .about-text p { font-size: 0.95rem; color: var(--muted); line-height: 1.8; margin-bottom: 1.2rem; }
+  .contact-section { background: var(--surface); text-align: center; }
+  .contact-title { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 900; color: var(--white); line-height: 1; margin-bottom: 1.5rem; }
+  .contact-title em { color: var(--gold); font-style: italic; }
+  .contact-sub { color: var(--muted); font-size: 1rem; margin-bottom: 3rem; }
+  .contact-links { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+  .contact-link { font-family: 'DM Mono', monospace; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; padding: 1rem 2rem; border: 1px solid var(--border); color: var(--text); transition: all 0.2s; display: flex; align-items: center; gap: 0.6rem; }
+  .contact-link:hover { border-color: var(--gold); color: var(--gold); }
+  .contact-link.primary { background: var(--gold); color: var(--bg); border-color: var(--gold); }
+  .contact-link.primary:hover { background: transparent; color: var(--gold); }
+  footer { padding: 2rem 3rem; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  footer p { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; }
+  .cs { color: var(--accent-cs); border-color: var(--accent-cs); }
+  .dj { color: var(--accent-dj); border-color: var(--accent-dj); }
+  .lv { color: var(--accent-lv); border-color: var(--accent-lv); }
+  .dot-cs { background: var(--accent-cs); }
+  .dot-dj { background: var(--accent-dj); }
+  .dot-lv { background: var(--accent-lv); }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes scrollAnim { 0%, 100% { opacity: 1; transform: scaleY(1); } 50% { opacity: 0.3; transform: scaleY(0.5); } }
+  @media (max-width: 900px) {
+    nav { padding: 1.2rem 1.5rem; } .nav-links { display: none; } section { padding: 5rem 1.5rem; }
+    .hero { padding: 0 1.5rem 4rem; } .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .skills-grid { grid-template-columns: 1fr; } .projects-grid { grid-template-columns: 1fr; } .hero-stats { gap: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">Theng<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#projects">Work</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-pill">Hire Me</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <p class="hero-label">Software Engineer &amp; Full-Stack Developer</p>
+  <h1 class="hero-title">Crafting <em>Digital</em><br/>Experiences</h1>
+  <p class="hero-sub">Specialized in C#, Django, and Laravel — building scalable, elegant applications that make an impact.</p>
+  <div class="hero-bottom">
+    <a href="#projects" class="hero-cta"><span>View Projects</span><span class="arrow">↓</span></a>
+    <div class="hero-stats">
+      <div class="stat-item"><div class="stat-num">4+</div><div class="stat-label">Years Exp.</div></div>
+      <div class="stat-item"><div class="stat-num">20+</div><div class="stat-label">Projects</div></div>
+      <div class="stat-item"><div class="stat-num">3</div><div class="stat-label">Core Stacks</div></div>
+    </div>
+  </div>
+  <div class="scroll-hint"><div class="scroll-line"></div><span>Scroll</span></div>
+</section>
+
+<section id="projects">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2 class="section-title">Selected Work</h2>
+  </div>
+
+  <div class="tech-divider">
+    <div class="tech-divider-line"></div>
+    <span class="tech-divider-label">C# / .NET</span>
+    <span class="tech-pill cs">Microsoft Stack</span>
+    <div class="tech-divider-line"></div>
+  </div>
+
+  <div class="projects-grid">
+    <div class="project-card">
+      <div class="card-img" data-slides='["pty-etl-dashboard.jpg"]'>
+        <img src="pty-etl-dashboard.jpg" alt="PTY ETL" class="active"/>
+        <div class="card-img-overlay"></div>
+        <span class="card-tech-badge cs">C# / ASP.NET Core</span>
+      </div>
+      <div class="card-body">
+        <p class="card-number">001</p>
+        <h3 class="card-title">PTY smart.E Online ETL Platform</h3>
+        <p class="card-desc">Full-featured industrial ETL web platform built in C# ASP.NET Core, orchestrating real-time data extraction from manufacturing machines including SCADA, Winding Sensing, Coating Sensing, and Level Monitoring systems. Live audit log of 2,505+ pipeline executions.</p>
+        <div class="card-tags"><span class="card-tag">ASP.NET Core</span><span class="card-tag">MSSQL / ODBC</span><span class="card-tag">Task Scheduler</span><span class="card-tag">SCADA Integration</span><span class="card-tag">Industrial IoT</span><span class="card-tag">Audit Logging</span></div>
+        <div class="card-footer"><a href="#" class="card-link cs">View Project <span>→</span></a><div class="card-dot dot-cs"></div></div>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="card-img" data-slides='["passrate-dashboard.jpg"]'>
+        <img src="passrate-dashboard.jpg" alt="Pass Rate Dashboard" class="active"/>
+        <div class="card-img-overlay"></div>
+        <span class="card-tech-badge cs">C# / Highcharts</span>
+      </div>
+      <div class="card-body">
+        <p class="card-number">002</p>
+        <h3 class="card-title">Pass Rate Quality Analytics Dashboard</h3>
+        <p class="card-desc">Manufacturing quality intelligence platform built in C# with Highcharts — visualizing machine lot judgements as Pass or Fail across FY, monthly, and daily views. Surfaces the Top 3 NC modes per production line with machine and item traceability.</p>
+        <div class="card-tags"><span class="card-tag">C# ASP.NET</span><span class="card-tag">Highcharts</span><span class="card-tag">NC Mode Analysis</span><span class="card-tag">Lot Judgement</span><span class="card-tag">Quality Control</span><span class="card-tag">KPI Tracking</span></div>
+        <div class="card-footer"><a href="#" class="card-link cs">View Project <span>→</span></a><div class="card-dot dot-cs"></div></div>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="card-img" data-slides='["scada-monitor.jpg"]'>
+        <img src="scada-monitor.jpg" alt="SCADA Monitor" class="active"/>
+        <div class="card-img-overlay"></div>
+        <span class="card-tech-badge cs">C# / SCADA</span>
+      </div>
+      <div class="card-body">
+        <p class="card-number">003</p>
+        <h3 class="card-title">SCADA Real-Time Machine Monitor</h3>
+        <p class="card-desc">Live SCADA interface built in C# that continuously streams actual sensor readings from factory machines. Displays process parameters in real time with threshold alerting via Patlite signal tower integration.</p>
+        <div class="card-tags"><span class="card-tag">C# / .NET</span><span class="card-tag">SCADA Protocol</span><span class="card-tag">Real-Time Streaming</span><span class="card-tag">Patlite Alert</span><span class="card-tag">Sensor Data</span><span class="card-tag">Threshold Alerts</span></div>
+        <div class="card-footer"><a href="#" class="card-link cs">View Project <span>→</span></a><div class="card-dot dot-cs"></div></div>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="card-img" data-slides='["nc-lot-judgement.jpg"]'>
+        <img src="nc-lot-judgement.jpg" alt="NC Lot Judgement" class="active"/>
+        <div class="card-img-overlay"></div>
+        <span class="card-tech-badge cs">C# / Highcharts</span>
+      </div>
+      <div class="card-body">
+        <p class="card-number">004</p>
+        <h3 class="card-title">NC Rate Lot Judgement System</h3>
+        <p class="card-desc">Automated manufacturing lot disposition engine built in C# that evaluates each production lot against NC rate thresholds and renders a definitive Pass or Fail verdict per transaction.</p>
+        <div class="card-tags"><span class="card-tag">C# ASP.NET</span><span class="card-tag">Highcharts</span><span class="card-tag">Lot Disposition</span><span class="card-tag">NC Rate Engine</span><span class="card-tag">Audit Trail</span><span class="card-tag">Rule-Based QC</span></div>
+        <div class="card-footer"><a href="#" class="card-link cs">View Project <span>→</span></a><div class="card-dot dot-cs"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tech-divider">
+    <div class="tech-divider-line"></div>
+    <span class="tech-divider-label">Django / Python</span>
+    <span class="tech-pill dj">Python Stack</span>
+    <div class="tech-divider-line"></div>
+  </div>
+
+  <div class="projects-grid">
+    <div class="project-card">
+      <div class="card-img" data-slides='["ptydx-data-retrieval.jpg"]'>
+        <img src="ptydx-data-retrieval.jpg" alt="PTY DX Pipeline" class="active"/>
+        <div class="card-img-overlay"></div>
+        <span class="card-tech-badge dj">Python / ETL</span>
+      </div>
+      <div class="card-body">
+        <p class="card-number">005</p>
+        <h3 class="card-title">PTY DX Data Retrieval Pipeline</h3>
+        <p class="card-desc">Real-time industrial IoT data pipeline extracting machine sensor data, transforming through Excel automation, and loading into MSSQL. Handles 50k+ data points daily with automated validation and error recovery.</p>
+        <div class="card-tags"><span class="card-tag">Python Scheduler</span><span class="card-tag">Excel Automation</span><span class="card-tag">MSSQL</span><span class="card-tag">Industrial IoT</span><span class="card-tag">Data Validation</span></div>
+        <div class="card-footer"><a href="#" class="card-link dj">View Project <span>→</span></a><div class="card-dot dot-dj"></div></div>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="card-img" data-slides='["mss-data-etl.jpg"]'>
+        <img src="mss-data-etl.jpg" alt="Global Sync ETL" class="active"/>
+        <div class="card-img-overlay"></div>
+        <span class="card-tech-badge dj">Python / ETL</span>
+      </div>
+      <div class="card-body">
+        <p class="card-number">006</p>
+        <h3 class="card-title">Global Data Synchronization ETL</h3>
+        <p class="card-desc">Enterprise-scale ETL system synchronizing data from Japan's MySQL to local MSSQL. Parallel processing, connection pooling, and automated email notifications for 100k+ daily transactions.</p>
+        <div class="card-tags"><span class="card-tag">MySQL to MSSQL</span><span class="card-tag">Task Scheduler</span><span class="card-tag">Parallel Processing</span><span class="card-tag">Data Migration</span><span class="card-tag">Email Alerts</span></div>
+        <div class="card-footer"><a href="#" class="card-link dj">View Project <span>→</span></a><div class="card-dot dot-dj"></div></div>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="card-img" data-slides='["process-monitor.jpg"]'>
+        <img src="process-monitor.jpg" alt="Process Monitor" class="active"/>
+        <div class="card-img-overlay"></div>
+        <span class="card-tech-badge dj">Python / Automation</span>
+      </div>
+      <div class="card-body">
+        <p class="card-number">007</p>
+        <h3 class="card-title">Intelligent Process Monitor</h3>
+        <p class="card-desc">Automated application lifecycle management system monitoring 15,000+ processes. Intelligently terminates applications with pop-up errors while protecting whitelisted processes via config.ini.</p>
+        <div class="card-tags"><span class="card-tag">Process Management</span><span class="card-tag">Event Logging</span><span class="card-tag">Config Management</span><span class="card-tag">Windows Server</span><span class="card-tag">Auto-Recovery</span></div>
+        <div class="card-footer"><a href="#" class="card-link dj">View Project <span>→</span></a><div class="card-dot dot-dj"></div></div>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="card-img" data-slides='["dx-quality-dashboard.jpg"]'>
+        <img src="dx-quality-dashboard.jpg" alt="DX Quality Dashboard" class="active"/>
+        <div class="card-img-overlay"></div>
+        <span class="card-tech-badge dj">Django / Analytics</span>
+      </div>
+      <div class="card-body">
+        <p class="card-number">008</p>
+        <h3 class="card-title">DX Quality Monitoring Dashboard</h3>
+        <p class="card-desc">Django-powered real-time manufacturing quality analytics platform. Interactive charts, statistical process control, automated reports, and historical trend analysis.</p>
+        <div class="card-tags"><span class="card-tag">Django</span><span class="card-tag">Chart.js</span><span class="card-tag">Real-time Analytics</span><span class="card-tag">Quality Control</span><span class="card-tag">SPC Charts</span></div>
+        <div class="card-footer"><a href="#" class="card-link dj">View Project <span>→</span></a><div class="card-dot dot-dj"></div></div>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="card-img" data-slides='["theng-ai-assistant.jpg"]'>
+        <img src="theng-ai-assistant.jpg" alt="Theng AI" class="active"/>
+        <div class="card-img-overlay"></div>
+        <span class="card-tech-badge dj">Django / AI/ML</span>
+      </div>
+      <div class="card-body">
+        <p class="card-number">009</p>
+        <h3 class="card-title">Theng AI — Enterprise RAG Assistant</h3>
+        <p class="card-desc">In-house company AI support system powered by RAG using OLLAMA Meta AI embedded in Django. Intelligent document Q&amp;A with 107K tokens processed and sub-second response times.</p>
+        <div class="card-tags"><span class="card-tag">OLLAMA</span><span class="card-tag">RAG Architecture</span><span class="card-tag">Django</span><span class="card-tag">Meta AI</span><span class="card-tag">Document Q&amp;A</span></div>
+        <div class="card-footer"><a href="#" class="card-link dj">View Project <span>→</span></a><div class="card-dot dot-dj"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tech-divider">
+    <div class="tech-divider-line"></div>
+    <span class="tech-divider-label">Laravel</span>
+    <span class="tech-pill lv">PHP Stack</span>
+    <div class="tech-divider-line"></div>
+  </div>
+
+  <div class="projects-grid">
+
+    <!-- 010 Bridal City — 4 images -->
+    <div class="project-card">
+      <div class="card-img" data-slides='["bridal-city-dashboard.png","bridal-city-storefront.png","bridal-city-products.png","bridal-city-orders.png"]'>
+        <img src="bridal-city-dashboard.png"  alt="Bridal City Dashboard"  class="active"/>
+        <img src="bridal-city-storefront.png" alt="Bridal City Storefront"/>
+        <img src="bridal-city-products.png"   alt="Bridal City Products"/>
+        <img src="bridal-city-orders.png"     alt="Bridal City Orders"/>
+        <div class="card-img-overlay"></div>
+        <span class="card-tech-badge lv">Laravel / XAMPP</span>
+        <div class="slide-counter">1 / 4</div>
+        <div class="slide-dots">
+          <span class="slide-dot active"></span><span class="slide-dot"></span>
+          <span class="slide-dot"></span><span class="slide-dot"></span>
+        </div>
+      </div>
+      <div class="card-body">
+        <p class="card-number">010</p>
+        <h3 class="card-title">Bridal City — Gown Rental &amp; E-Commerce Platform</h3>
+        <p class="card-desc">Full-stack gown rental and e-commerce system built in Laravel for Dream Day Events — live in production on XAMPP. Tracks P36,000+ monthly sales, real-time pending orders, stock pie charts, best-seller rankings, and full order &amp; customer management.</p>
+        <div class="card-tags"><span class="card-tag">Laravel</span><span class="card-tag">XAMPP / MySQL</span><span class="card-tag">Admin Dashboard</span><span class="card-tag">Order Management</span><span class="card-tag">Inventory Tracking</span><span class="card-tag">Sales Analytics</span></div>
+        <div class="card-footer"><a href="#" class="card-link lv">View Project <span>→</span></a><div class="card-dot dot-lv"></div></div>
+      </div>
+    </div>
+
+    <!-- 011 Crypto Clue — 3 images -->
+    <div class="project-card">
+      <div class="card-img" data-slides='["crypto-clue-booth.jpg","crypto-clue-ready.jpg","crypto-clue-score.jpg"]'>
+        <img src="crypto-clue-booth.jpg"  alt="Crypto Clue Booth"       class="active"/>
+        <img src="crypto-clue-ready.jpg"  alt="Crypto Clue Player Ready"/>
+        <img src="crypto-clue-score.jpg"  alt="Crypto Clue Score"/>
+        <div class="card-img-overlay"></div>
+        <span class="card-tech-badge lv">Laravel / Face Detection</span>
+        <div class="slide-counter">1 / 3</div>
+        <div class="slide-dots">
+          <span class="slide-dot active"></span><span class="slide-dot"></span><span class="slide-dot"></span>
+        </div>
+      </div>
+      <div class="card-body">
+        <p class="card-number">011</p>
+        <h3 class="card-title">Crypto Clue — Interactive Company Game Platform</h3>
+        <p class="card-desc">Cyberpunk-themed "4 Pics 1 Word" guessing game built in Laravel for a company IT Day event. Live face detection booth, countdown-timer word puzzles, real-time leaderboard, and Lucky Spin scoring.</p>
+        <div class="card-tags"><span class="card-tag">Laravel</span><span class="card-tag">Face Detection</span><span class="card-tag">Real-time Scoring</span><span class="card-tag">Game UI</span><span class="card-tag">Event Platform</span><span class="card-tag">Leaderboard</span></div>
+        <div class="card-footer"><a href="#" class="card-link lv">View Project <span>→</span></a><div class="card-dot dot-lv"></div></div>
+      </div>
+    </div>
+
+    <!-- 012 Restaurant — 2 images -->
+    <div class="project-card">
+      <div class="card-img" data-slides='["resto-menu.jpg","resto-addon.jpg"]'>
+        <img src="resto-menu.jpg"  alt="Restaurant Menu"    class="active"/>
+        <img src="resto-addon.jpg" alt="Restaurant Add-ons"/>
+        <div class="card-img-overlay"></div>
+        <span class="card-tech-badge lv">Laravel / In Development</span>
+        <div class="slide-counter">1 / 2</div>
+        <div class="slide-dots">
+          <span class="slide-dot active"></span><span class="slide-dot"></span>
+        </div>
+      </div>
+      <div class="card-body">
+        <p class="card-number">012</p>
+        <h3 class="card-title">Smart Restaurant Ordering System</h3>
+        <p class="card-desc">Jollibee-inspired self-service ordering platform in Laravel. Categorized menus, size selection, free drink pairing, paid add-ons — all live-updating a running order summary. Designed for touchscreen kiosk deployment.</p>
+        <div class="card-tags"><span class="card-tag">Laravel</span><span class="card-tag">Kiosk UI</span><span class="card-tag">Menu Management</span><span class="card-tag">Add-on System</span><span class="card-tag">Live Order Cart</span><span class="card-tag">In Development</span></div>
+        <div class="card-footer"><a href="#" class="card-link lv">View Project <span>→</span></a><div class="card-dot dot-lv"></div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="tech-divider">
+    <div class="tech-divider-line"></div>
+    <span class="tech-divider-label">PHP Native</span>
+    <span class="tech-pill" style="color:#c084fc; border-color:#c084fc;">Pure PHP Stack</span>
+    <div class="tech-divider-line"></div>
+  </div>
+
+  <div class="projects-grid">
+
+    <!-- 013 Library — 8 images -->
+    <div class="project-card">
+      <div class="card-img" data-slides='["library-desktop.jpg","library-dashboard.jpg","library-qr-scan.jpg","library-logout.jpg","library-qr-gen.jpg","library-login.jpg","library-card-issuance.png","library-borrowers.png"]'>
+        <img src="library-desktop.jpg"       alt="Library Desktop"      class="active"/>
+        <img src="library-dashboard.jpg"     alt="Library Dashboard"/>
+        <img src="library-qr-scan.jpg"       alt="Library QR Scan"/>
+        <img src="library-logout.jpg"        alt="Library Logout"/>
+        <img src="library-qr-gen.jpg"        alt="Library QR Generator"/>
+        <img src="library-login.jpg"         alt="Library Login"/>
+        <img src="library-card-issuance.png" alt="Library Card Issuance"/>
+        <img src="library-borrowers.png"     alt="Library Borrowers"/>
+        <div class="card-img-overlay"></div>
+        <span class="card-tech-badge" style="color:#c084fc; border-color:#c084fc;">PHP Native / QR Code</span>
+        <div class="slide-counter">1 / 8</div>
+        <div class="slide-dots">
+          <span class="slide-dot active"></span><span class="slide-dot"></span><span class="slide-dot"></span>
+          <span class="slide-dot"></span><span class="slide-dot"></span><span class="slide-dot"></span>
+          <span class="slide-dot"></span><span class="slide-dot"></span>
+        </div>
+      </div>
+      <div class="card-body">
+        <p class="card-number">013</p>
+        <h3 class="card-title">NMSCST Library Users' Tracking System</h3>
+        <p class="card-desc">Full-featured library attendance and borrower management platform built in pure PHP — donated to NMSCST and deployed across 3 school library branches. QR code kiosk login, department analytics, LBC issuance, and graduating student clearance module.</p>
+        <div class="card-tags"><span class="card-tag">PHP Native</span><span class="card-tag">QR Code Login</span><span class="card-tag">3 Live Libraries</span><span class="card-tag">LBC Issuance</span><span class="card-tag">Attendance Analytics</span><span class="card-tag">Open Source Donation</span></div>
+        <div class="card-footer"><a href="#" class="card-link" style="color:#c084fc;">View Project <span>→</span></a><div class="card-dot" style="background:#c084fc;"></div></div>
+      </div>
+    </div>
+
+    <!-- 014 POS — 3 images -->
+    <div class="project-card">
+      <div class="card-img" data-slides='["pos-products.jpg","pos-receipt.jpg","pos-list.jpg"]'>
+        <img src="pos-products.jpg" alt="POS Inventory"  class="active"/>
+        <img src="pos-receipt.jpg"  alt="POS Receipt"/>
+        <img src="pos-list.jpg"     alt="POS Products List"/>
+        <div class="card-img-overlay"></div>
+        <span class="card-tech-badge" style="color:#c084fc; border-color:#c084fc;">PHP Native / POS</span>
+        <div class="slide-counter">1 / 3</div>
+        <div class="slide-dots">
+          <span class="slide-dot active"></span><span class="slide-dot"></span><span class="slide-dot"></span>
+        </div>
+      </div>
+      <div class="card-body">
+        <p class="card-number">014</p>
+        <h3 class="card-title">Che Che Sari-Sari Store POS System</h3>
+        <p class="card-desc">Complete POS and inventory system built from scratch in pure PHP during COVID-19. Full product lifecycle, expiry tracking, thermal receipt printing, and date-range profit reports — tracking P18,403 sales with P2,489 profit.</p>
+        <div class="card-tags"><span class="card-tag">PHP Native</span><span class="card-tag">Thermal Receipt Print</span><span class="card-tag">Expiry Monitoring</span><span class="card-tag">Inventory Reports</span><span class="card-tag">COVID-era Build</span><span class="card-tag">Local Business</span></div>
+        <div class="card-footer"><a href="#" class="card-link" style="color:#c084fc;">View Project <span>→</span></a><div class="card-dot" style="background:#c084fc;"></div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="skills" class="skills-section">
+  <div class="section-header"><span class="section-num">02</span><h2 class="section-title">Technical Arsenal</h2></div>
+  <div class="skills-grid">
+    <div class="skill-block cs">
+      <p class="skill-block-title">C# / .NET Ecosystem</p>
+      <ul class="skill-list">
+        <li><span class="skill-icon">⬡</span> ASP.NET Core &amp; Web API</li>
+        <li><span class="skill-icon">⬡</span> Entity Framework Core</li>
+        <li><span class="skill-icon">⬡</span> Highcharts Data Visualization</li>
+        <li><span class="skill-icon">⬡</span> SCADA / Industrial Integration</li>
+        <li><span class="skill-icon">⬡</span> ETL Pipeline Architecture</li>
+        <li><span class="skill-icon">⬡</span> MSSQL / ODBC / ADO.NET</li>
+        <li><span class="skill-icon">⬡</span> SignalR Real-Time</li>
+        <li><span class="skill-icon">⬡</span> xUnit / NUnit Testing</li>
+      </ul>
+    </div>
+    <div class="skill-block dj">
+      <p class="skill-block-title">Django / Python Ecosystem</p>
+      <ul class="skill-list">
+        <li><span class="skill-icon">⬡</span> Django REST Framework</li>
+        <li><span class="skill-icon">⬡</span> Celery &amp; Flower</li>
+        <li><span class="skill-icon">⬡</span> Django Channels (WebSockets)</li>
+        <li><span class="skill-icon">⬡</span> OLLAMA / RAG Architecture</li>
+        <li><span class="skill-icon">⬡</span> Pandas &amp; NumPy</li>
+        <li><span class="skill-icon">⬡</span> Python Task Scheduler</li>
+        <li><span class="skill-icon">⬡</span> pytest / Factory Boy</li>
+      </ul>
+    </div>
+    <div class="skill-block lv">
+      <p class="skill-block-title">Laravel / PHP Ecosystem</p>
+      <ul class="skill-list">
+        <li><span class="skill-icon">⬡</span> Laravel MVC Architecture</li>
+        <li><span class="skill-icon">⬡</span> PHP Native / Vanilla PHP</li>
+        <li><span class="skill-icon">⬡</span> MySQL / XAMPP Server</li>
+        <li><span class="skill-icon">⬡</span> QR Code Integration</li>
+        <li><span class="skill-icon">⬡</span> Thermal Receipt Printing</li>
+        <li><span class="skill-icon">⬡</span> Eloquent ORM</li>
+        <li><span class="skill-icon">⬡</span> Blade Templates</li>
+        <li><span class="skill-icon">⬡</span> PHPUnit / Pest</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="section-header"><span class="section-num">03</span><h2 class="section-title">About Me</h2></div>
+  <div class="about-grid">
+    <div class="about-img-wrap">
+      <div class="about-img-frame"><img src="theng-photo.jpeg" alt="Theng Badz"/></div>
+      <div class="about-img-deco"></div>
+      <div class="about-exp-badge"><span class="num">4+</span><span class="label">Years of<br/>Experience</span></div>
+    </div>
+    <div class="about-text">
+      <h2>Building Things That<br/><em style="font-style:italic; color:var(--gold)">Actually Matter</em></h2>
+      <p>I'm Theng Badz, a full-stack software engineer with over 5 years of experience delivering production-grade applications across three major ecosystems: C#/.NET, Python/Django, and PHP/Laravel.</p>
+      <p>My approach is pragmatic — I choose the right tool for the right job. High-throughput ETL with SCADA? C#. Data-driven API or AI RAG assistant? Django. Elegant feature-rich web app? Laravel.</p>
+      <p>I've shipped industrial IoT pipelines processing 100k+ daily transactions, manufacturing quality dashboards, and in-house AI assistants — all in production environments where reliability is non-negotiable.</p>
+      <div style="display:flex; gap:1rem; margin-top:2rem; flex-wrap:wrap;">
+        <a href="#contact" style="font-family:'DM Mono',monospace; font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--bg); background:var(--gold); padding:0.8rem 1.8rem; text-decoration:none;">Get In Touch →</a>
+        <a href="#" style="font-family:'DM Mono',monospace; font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--text); border:1px solid var(--border); padding:0.8rem 1.8rem; text-decoration:none;">Download CV</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="contact-section">
+  <p style="font-family:'DM Mono',monospace; font-size:0.68rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); margin-bottom:1.2rem;">04 — Let's Work Together</p>
+  <h2 class="contact-title">Have a project<br/>in <em>mind?</em></h2>
+  <p class="contact-sub">I'm open to freelance work and full-time opportunities. Let's build something great.</p>
+  <div class="contact-links">
+    <a href="mailto:zippcoffee07@gmail.com" class="contact-link primary">✉ Email Me</a>
+    <a href="#" class="contact-link">⌥ LinkedIn</a>
+    <a href="#" class="contact-link">⌘ GitHub</a>
+    <a href="#" class="contact-link">⧉ Twitter</a>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Theng Badz — Software Engineer</p>
+  <p>Built with precision &amp; purpose</p>
+</footer>
+
+<script>
+(function() {
+  const INTERVAL = 1400; // ms between slides on hover
+
+  document.querySelectorAll('.project-card').forEach(function(card) {
+    var wrapper = card.querySelector('.card-img');
+    var images  = Array.from(wrapper.querySelectorAll('img'));
+    var dots    = Array.from(wrapper.querySelectorAll('.slide-dot'));
+    var counter = wrapper.querySelector('.slide-counter');
+    var total   = images.length;
+
+    if (total <= 1) return;
+
+    var current = 0;
+    var timer   = null;
+
+    function goTo(idx) {
+      images[current].classList.remove('active');
+      if (dots[current]) dots[current].classList.remove('active');
+      current = ((idx % total) + total) % total;
+      images[current].classList.add('active');
+      if (dots[current]) dots[current].classList.add('active');
+      if (counter) counter.textContent = (current + 1) + ' / ' + total;
+    }
+
+    function start() {
+      if (timer) return;
+      timer = setInterval(function() { goTo(current + 1); }, INTERVAL);
+    }
+
+    function stop() {
+      clearInterval(timer);
+      timer = null;
+      goTo(0);
+    }
+
+    card.addEventListener('mouseenter', start);
+    card.addEventListener('mouseleave', stop);
+
+    dots.forEach(function(dot, i) {
+      dot.addEventListener('click', function(e) {
+        e.stopPropagation();
+        clearInterval(timer);
+        goTo(i);
+        timer = setInterval(function() { goTo(current + 1); }, INTERVAL);
+      });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
